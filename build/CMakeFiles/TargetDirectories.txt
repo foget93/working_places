@@ -1,3 +1,0 @@
-/home/dmitrii/cpp/working_places/build/CMakeFiles/rebuild_cache.dir
-/home/dmitrii/cpp/working_places/build/CMakeFiles/edit_cache.dir
-/home/dmitrii/cpp/working_places/build/CMakeFiles/working_places.out.dir

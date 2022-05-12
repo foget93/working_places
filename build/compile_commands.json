@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/dmitrii/cpp/working_places/build",
-  "command": "/usr/bin/g++    -g   -o CMakeFiles/working_places.out.dir/main.cpp.o -c /home/dmitrii/cpp/working_places/src/main.cpp",
-  "file": "/home/dmitrii/cpp/working_places/src/main.cpp"
-}
-]
