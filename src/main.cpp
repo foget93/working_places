@@ -1,11 +1,11 @@
+#include "read_write_data.h"
 
-//#include "read_write_data.h"
-#include "boost/date_time/gregorian/gregorian.hpp"
 #include <iostream>
 #include <string>
 #include <sstream>
 
 #include <algorithm>
+#include <chrono>
 
 /* Define a series of char arrays for short and long name strings 
    * to be associated with German date output (US names will be 
@@ -54,38 +54,53 @@ boost::gregorian::date MMDDYYYYasDate( const std::string& str)
 
 
 int main ()
-{
+{ 
     using namespace boost::gregorian;
-
     
-    date d = day_clock::local_day();
-    date prev = d /*- months(1)*/;
-    date next = d + months(1);
-    std::cout << d.month() << " " << prev.month() << " " << next.month() << std::endl;
-    std::cout << (d == prev) << std::endl;
+    auto begin = std::chrono::steady_clock::now();
+
+    date dat = day_clock::local_day();
+
+    Part_wp p(std::make_pair<std::string, std::string>("Мультиметр", "APPA-708"),
+              "10101013",
+              dat);
+    p.write_pwp();
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::microseconds>(end - begin);
+    std::cout << "The time: " << elapsed_ms.count() << " ms\n";
+
+    // 
+
+  //   date DD;
+  //   date d = day_clock::local_day();
+  //   date prev = d /*- months(1)*/;
+  //   date next = d + months(1);
+  //   std::cout << d.month() << " " << prev.month() << " " << next.month() << std::endl;
+  //   std::cout << (d == prev) << std::endl;
+  //   std::cout << d << std::endl;
 
 
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // std::string ds("20020125");
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //   // std::string ds("20020125");
 
-    // boost::gregorian::date d(from_simple_string(ds));
+  //   // boost::gregorian::date d(from_simple_string(ds));
 
-    //std::cout << d.day() <<" " << d.month() << " " << d.year() << std::endl;
+  //   //std::cout << d.day() <<" " << d.month() << " " << d.year() << std::endl;
 
  
-    boost::gregorian::date dat(2002,boost::date_time::Jan,10);
+  //   boost::gregorian::date dat(2002,boost::date_time::Jan,10);
 
-    std::string test = dateAsMMDDYYYY(dat);
-    std::cout << test << std::endl;
+  //   std::string test = dateAsMMDDYYYY(dat);
+  //   std::cout << test <<" " << DD << std::endl;
 
    
 
-    // // пример с буста
-    std::cout << "Using Boost "     
-          << BOOST_VERSION / 100000     << "."  // major version
-          << BOOST_VERSION / 100 % 1000 << "."  // minor version
-          << BOOST_VERSION % 100                // patch level
-          << std::endl;
+  //   // // пример с буста
+  //   std::cout << "Using Boost "     
+  //         << BOOST_VERSION / 100000     << "."  // major version
+  //         << BOOST_VERSION / 100 % 1000 << "."  // minor version
+  //         << BOOST_VERSION % 100                // patch level
+  //         << std::endl;
 
 
    
