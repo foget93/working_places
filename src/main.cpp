@@ -7,29 +7,7 @@
 #include <algorithm>
 #include <chrono>
 
-/* Define a series of char arrays for short and long name strings 
-   * to be associated with German date output (US names will be 
-   * retrieved from the locale). */
-  const char* const de_short_month_names[] = 
-  {
-    "Jan", "Feb", "Mar", "Apr", "Mai", "Jun",
-    "Jul", "Aug", "Sep", "Okt", "Nov", "Dez", "NAM" 
-  };
-  const char* const de_long_month_names[] =
-  {
-    "Januar", "Februar", "Marz", "April", "Mai",
-    "Juni", "Juli", "August", "September", "Oktober",
-    "November", "Dezember", "NichtDerMonat"
-  };
-  const char* const de_long_weekday_names[] = 
-  {
-    "Sonntag", "Montag", "Dienstag", "Mittwoch",
-    "Donnerstag", "Freitag", "Samstag"
-  };
-  const char* const de_short_weekday_names[] =
-  {
-    "Son", "Mon", "Die","Mit", "Don", "Fre", "Sam"
-  };
+#include <fstream>
 
 const std::locale fmt(std::locale::classic(),
                       new boost::gregorian::date_facet("%d/%m/%Y")); //день месяц год
@@ -58,13 +36,34 @@ int main ()
     using namespace boost::gregorian;
     
     auto begin = std::chrono::steady_clock::now();
+    std::fstream file("/home/dmitrii/cpp/working_places/data_files/database.txt",
+                      std::ios::app | std::ios::in);
+//data_files/database.txt
 
     date dat = day_clock::local_day();
-
     Part_wp p(std::make_pair<std::string, std::string>("Мультиметр", "APPA-708"),
               "10101013",
               dat);
-    p.write_pwp();
+
+    //file << p;
+    //std::ifstream is("/home/dmitrii/cpp/working_places/data_files/database.txt");
+    std::vector<Part_wp> vPwp;
+    if(file.is_open())
+    {
+      Part_wp nP;
+      while (file >> nP)
+      {
+        vPwp.push_back(nP);
+      }
+    }
+    
+    for (auto& x : vPwp)
+    {
+        x.write_pwp();
+    }
+    
+
+
     auto end = std::chrono::steady_clock::now();
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::microseconds>(end - begin);
     std::cout << "The time: " << elapsed_ms.count() << " ms\n";
@@ -96,11 +95,11 @@ int main ()
    
 
   //   // // пример с буста
-  //   std::cout << "Using Boost "     
-  //         << BOOST_VERSION / 100000     << "."  // major version
-  //         << BOOST_VERSION / 100 % 1000 << "."  // minor version
-  //         << BOOST_VERSION % 100                // patch level
-  //         << std::endl;
+    std::cout << "Using Boost "     
+          << BOOST_VERSION / 100000     << "."  // major version
+          << BOOST_VERSION / 100 % 1000 << "."  // minor version
+          << BOOST_VERSION % 100                // patch level
+          << std::endl;
 
 
    
