@@ -9,26 +9,7 @@
 
 #include <fstream>
 
-const std::locale fmt(std::locale::classic(),
-                      new boost::gregorian::date_facet("%d/%m/%Y")); //день месяц год
-std::string dateAsMMDDYYYY( const boost::gregorian::date& date )
-{
-    std::ostringstream os;
-    os.imbue(fmt);
-    os << date;
-    return os.str();
-}
-
-const std::locale fmt2(std::locale::classic(),
-                       new boost::gregorian::date_input_facet("%m/%d/%Y")); // месяц день год
-boost::gregorian::date MMDDYYYYasDate( const std::string& str)
-{
-    std::istringstream is(str);
-    is.imbue(fmt2);
-    boost::gregorian::date date;
-    is >> date;
-    return date;
-} // обратное преобразование
+// обратное преобразование
 
 
 int main ()
@@ -36,15 +17,19 @@ int main ()
     using namespace boost::gregorian;
     
     auto begin = std::chrono::steady_clock::now();
+
     std::fstream file("/home/dmitrii/cpp/working_places/data_files/database.txt",
                       std::ios::app | std::ios::in);
 //data_files/database.txt
 
     date dat = day_clock::local_day();
-    Part_wp p(std::make_pair<std::string, std::string>("Мультиметр", "APPA-708"),
+    Part_wp p(std::make_pair<std::string, std::string>("PILA", "APPA-708"),
               "10101013",
               dat);
-
+    //date d1(2012,5,13);
+    std::cout << p << std::endl;
+    p.set_date("10-11-2001");
+    std::cout << p << std::endl;
     //file << p;
     //std::ifstream is("/home/dmitrii/cpp/working_places/data_files/database.txt");
     std::vector<Part_wp> vPwp;
@@ -59,7 +44,7 @@ int main ()
     
     for (auto& x : vPwp)
     {
-        x.write_pwp();
+        x.write_pwp_to_cout();
     }
     
 
