@@ -8,12 +8,34 @@
 #include <chrono>
 
 #include <fstream>
+#include <filesystem>
+
 
 // обратное преобразование
 
+namespace fs = std::filesystem;
 
 int main ()
 { 
+  
+    __cplusplus;
+    
+    fs::path path {"/home/dmitrii/cpp/working_places/data_files/database.txt"};
+    std::cout << "parent_path: " << path.parent_path() << std::endl;
+    std::cout << "extension: " << path.extension() << std::endl;
+    std::cout << "filename: " << path.filename() << std::endl;
+    std::cout << "root_name: " << path.root_name() << std::endl;
+    std::cout << "has_relative_path: " << path.has_relative_path() << std::endl;
+    std::cout << "has_root_directory: " << path.has_root_directory() << std::endl;
+
+    std::cout << "preferred_separator: " << fs::path::preferred_separator << std::endl; // разделить unix систем
+
+    fs::create_directories("banana/cocosa/mango");
+    fs::create_directories("banana/apple/kiwi");
+    system("ls -a banana/*");
+    fs::remove_all("banana");
+    system("ls -a banana/*");
+
     using namespace boost::gregorian;
     
     auto begin = std::chrono::steady_clock::now();
@@ -41,14 +63,11 @@ int main ()
         vPwp.push_back(nP);
       }
     }
-    
     for (auto& x : vPwp)
     {
         x.write_pwp_to_cout();
     }
     
-
-
     auto end = std::chrono::steady_clock::now();
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::microseconds>(end - begin);
     std::cout << "The time: " << elapsed_ms.count() << " ms\n";
